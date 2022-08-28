@@ -60,6 +60,7 @@ async def run():
 
 
 async def daemon():
+    global run_count
     while True:
         asyncio.ensure_future(run())
         await asyncio.sleep(5 * 60)
