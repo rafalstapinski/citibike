@@ -1,0 +1,4 @@
+#!/opt/homebrew/bin/fish
+
+e .env
+poetry run python citibike/main.py

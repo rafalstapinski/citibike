@@ -1,0 +1,53 @@
+{
+  "editor.tabSize": 2,
+  "git.ignoreLimitWarning": true,
+  "files.insertFinalNewline": true,
+  "standard.enable": true,
+  "standard.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "standard.run": "onType",
+  "standard.engine": "ts-standard",
+  "standard.autoFixOnSave": true,
+  "editor.insertSpaces": true,
+  "files.exclude": {
+    "**/.git": false,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "node_modules": true
+  },
+  "python.languageServer": "Pylance",
+  "python.testing.pytestArgs": [
+    "test"
+  ],
+  "[python]": {
+    "gitlens.codeLens.symbolScopes": [
+      "!Module"
+    ],
+    "editor.wordBasedSuggestions": false,
+    "editor.tabSize": 4
+  },
+  "python.testing.pytestEnabled": true,
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "cmd": ".venv/bin/isort --sp pyproject.toml ${file}",
+        "isAsync": true,
+        "match": "\\.py$"
+      },
+      {
+        "cmd": ".venv/bin/black --config pyproject.toml ${file}",
+        "isAsync": true,
+        "match": "\\.py$"
+      }
+    ]
+  }
+}
