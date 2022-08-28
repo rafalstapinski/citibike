@@ -5,7 +5,7 @@ import httpx
 import uvloop
 from p3orm import Porm
 
-from citibike.models.db import Station, StationStatus
+from citibike.models.db import Run, Station, StationStatus
 from citibike.models.gql import CitiBikeResponse
 from citibike.settings import Settings
 
@@ -27,6 +27,8 @@ async def run():
     print(f"""starting run {run_count} @ {(run_time - timedelta(hours=4)).strftime("%c")}""")
 
     await Porm.connect(dsn=Settings.DATABASE_URL)
+
+    run = await Run.insert_one(Run(time=run_time))
 
     async with httpx.AsyncClient() as client:
         response = await client.send(request)
@@ -53,7 +55,7 @@ async def run():
                 bikes_available=cb_station.bikes_available,
                 ebikes_available=cb_station.ebikes_available,
                 docks_available=cb_station.bike_docks_available,
-                run_time=run_time,
+                run_id=run.id,
             )
         )
 

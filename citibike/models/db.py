@@ -5,6 +5,18 @@ from datetime import datetime
 from p3orm import Column, ForeignKeyRelationship, ReverseRelationship, Table
 
 
+class Run(Table):
+    __tablename__ = "run"
+
+    id = Column(int, pk=True, autogen=True)
+    time = Column(datetime)
+
+    statuses: list[StationStatus] = ReverseRelationship(
+        self_column="id",
+        foreign_column="run_id",
+    )
+
+
 class Station(Table):
     __tablename__ = "station"
 
@@ -30,9 +42,14 @@ class StationStatus(Table):
     bikes_available = Column(int)
     ebikes_available = Column(int)
     docks_available = Column(int)
-    run_time = Column(datetime)
+    run_id = Column(int)
 
     station: Station = ForeignKeyRelationship(
         self_column="station_id",
+        foreign_column="id",
+    )
+
+    run: Run = ForeignKeyRelationship(
+        self_column="run_id",
         foreign_column="id",
     )
