@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import httpx
 import uvloop
@@ -23,7 +23,7 @@ run_count = 1
 async def run():
 
     run_time = datetime.utcnow()
-    print(f"""starting run {run_count} @ {datetime.now().strftime("%c")}""")
+    print(f"""starting run {run_count} @ {(run_time - timedelta(hours=4)).strftime("%c")}""")
 
     await Porm.connect(dsn=Settings.DATABASE_URL)
 
