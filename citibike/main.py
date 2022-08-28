@@ -17,11 +17,13 @@ request = httpx.Request(
     },
 )
 
+run_count = 1
+
 
 async def run():
 
     run_time = datetime.utcnow()
-    print(f"starting {run_time=}")
+    print(f"""starting run {run_count} @ {datetime.now().strftime("%c")}""")
 
     await Porm.connect(dsn=Settings.DATABASE_URL)
 
@@ -56,14 +58,12 @@ async def run():
 
     await Porm.disconnect()
 
-    end_time = datetime.utcnow()
-    print(f"{end_time=} {(end_time - run_time)=}")
-
 
 async def daemon():
     while True:
         asyncio.ensure_future(run())
         await asyncio.sleep(5 * 60)
+        run_count += 1
 
 
 # daemonize, with ensure_future spitting out every 5 min
