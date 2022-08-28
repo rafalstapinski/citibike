@@ -20,11 +20,15 @@ request = httpx.Request(
 
 async def run():
 
+    run_time = datetime.utcnow()
+    print(f"starting {run_time=}")
+
+    await Porm.connect(dsn=Settings.DATABASE_URL)
+
     async with httpx.AsyncClient() as client:
         response = await client.send(request)
 
     data = CitiBikeResponse.parse_obj(response.json())
-    run_time = datetime.utcnow()
 
     for cb_station in data.data.supply.stations:
         station = await Station.fetch_first(Station.citibike_id == cb_station.station_id)
@@ -50,13 +54,16 @@ async def run():
             )
         )
 
+    await Porm.disconnect()
+
+    end_time = datetime.utcnow()
+    print(f"{end_time=} {(end_time - run_time)=}")
+
 
 async def daemon():
     while True:
-        await Porm.connect(dsn=Settings.DATABASE_URL)
         asyncio.ensure_future(run())
-        await Porm.disconnect()
-        await asyncio.sleep(2)
+        await asyncio.sleep(5 * 60)
 
 
 # daemonize, with ensure_future spitting out every 5 min
