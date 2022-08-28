@@ -22,6 +22,7 @@ run_count = 1
 
 async def run():
 
+    global run_count
     run_time = datetime.utcnow()
     print(f"""starting run {run_count} @ {(run_time - timedelta(hours=4)).strftime("%c")}""")
 
